@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # --- CONFIGURATION ---
-THRESHOLD=00
+THRESHOLD=80
 # Absolute path to your Project 01 script
 CLEANER_SCRIPT="/home/nhcp/aws-automation-toolkit/01-s3-log-archiver/cleaner_aws.sh"
 LOG_FILE="/home/nhcp/aws-automation-toolkit/02-health-monitor/system_health.log"

@@ -17,3 +17,4 @@ The goal is **Storage Lifecycle Management**. We don't want to delete data (it's
 
 **Q: Explain the "Exit Code" logic in your script.**
 **A:** I used `if [ $? -eq 0 ]`. This is a safety check. It tells the script: "Only delete the local file if the AWS upload was 100% successful." This prevents data loss during internet flickers.
+ 

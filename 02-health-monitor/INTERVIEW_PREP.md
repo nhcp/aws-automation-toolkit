@@ -19,3 +19,4 @@ The goal is **High Availability (HA)**.
 
 **Q: How does this connect to the other projects?**
 **A:** It is the **Orchestrator**. It’s the "Brain" that decides when to use the "Mover" (Project 01).
+ 

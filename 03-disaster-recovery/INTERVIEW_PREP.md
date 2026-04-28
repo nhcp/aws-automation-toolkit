@@ -17,3 +17,4 @@ The goal is **Data Accessibility**.
 
 **Q: How do these three projects form a "Full Lifecycle"?**
 **A:** They cover the three pillars of DevOps: **Monitor** (Project 02), **Action** (Project 01), and **Recovery** (Project 03).
+ 

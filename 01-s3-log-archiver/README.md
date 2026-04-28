@@ -22,18 +22,7 @@ In production environments, application and system logs can grow exponentially, 
 
 ---
 
-## 🧠 Technical Deep Dive (Interview Q&A)
 
-### Q1: Why did you choose Gzip over other compression methods?
-**A:** Gzip offers the best balance between compression speed and ratio for text-based logs. In a cloud environment, smaller files mean lower **S3 Storage costs** and significantly reduced **Data Transfer** fees. Compressing a 100MB log to 10MB saves money every single day.
-
-### Q2: How did you secure the AWS credentials for this automation?
-**A:** I followed the **Principle of Least Privilege**. Instead of using an Admin account, I created a dedicated IAM User with an inline policy restricted to `s3:PutObject` and `s3:ListBucket` permissions for this specific bucket ARN only.
-
-### Q3: What is the "Fail-Safe" mechanism in your script?
-**A:** The script uses a **conditional execution check**. It captures the exit code ($?) of the AWS upload command. If the upload fails (due to network or permissions), the script halts. This prevents the "silent data loss" scenario where local files are deleted before being safely stored in the cloud.
-
----
 
 ## 🚀 Business Impact
 * **Reliability:** Eliminated "Disk Full" system crashes across the environment.

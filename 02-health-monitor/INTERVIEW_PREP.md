@@ -1,14 +1,21 @@
-# 🧠 Technical Deep Dive: System Health Monitor
+# 🧠 Technical Deep Dive: System Health Monitor (The Watchdog)
 
-### 🌟 What is this project about?
-This is the **"Security Guard"** of the toolkit. It stands watch over the server 24/7, checking how much disk space is left. If the server gets too full (over 80%), it "screams" (sends an AWS SNS email alert) and then "fixes" the problem by calling the Log Archiver.
+### 🌟 Project Concept: "The Self-Healing Brain"
+Most companies find out their server is down because a customer complains. That is "Reactive" engineering. This project is "Proactive." It acts as a 24/7 Watchdog that monitors the server's vitals and fixes problems before they become outages.
 
-### 🎯 Objective
-To achieve **"Self-Healing Infrastructure"**—where a server fixes its own problems before a human even wakes up.
+### 🎯 Objective & Strategy
+The goal is **High Availability (HA)**. 
+* **Strategy:** The script checks Disk Usage. If it hits a specific "Threshold" (e.g., 80%), it triggers two actions:
+  1. **Alerting:** Sends an instant email via **AWS SNS** so humans stay informed.
+  2. **Remediation:** Automatically calls the Project 01 script to clear space.
 
-### 🎤 Interview Q&A
-**Q: How does this project relate to the others?**
-**A:** This is the **Trigger**. Project 01 is the "tool," but Project 02 is the "hand" that picks up the tool when it's needed.
+### 💰 Real-World Business Value
+* **Reduced MTTR (Mean Time To Repair):** Instead of waiting for an engineer to wake up at 3 AM to clear a disk, the script does it in milliseconds.
+* **Customer Trust:** Prevents "Disk Full" errors that lead to website downtime.
 
-**Q: Why send an email via SNS?**
-**A:** Because engineers need **Visibility**. Even if the script fixes the problem, we need to know it happened so we can investigate the root cause later.
+### 🎤 Interview Q&A (Beginner to Pro)
+**Q: Why use AWS SNS instead of a simple local email?**
+**A:** AWS SNS (Simple Notification Service) is a managed cloud service. It is highly reliable and can scale to send alerts to SMS, Email, or even PagerDuty. It keeps the "Alerting" separate from the server's own problems.
+
+**Q: How does this connect to the other projects?**
+**A:** It is the **Orchestrator**. It’s the "Brain" that decides when to use the "Mover" (Project 01).

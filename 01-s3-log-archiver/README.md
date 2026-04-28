@@ -41,3 +41,37 @@ A Bash-based automation suite that identifies "cold" log data, compresses it usi
 * **Compute:** Ubuntu Instance (WSL/EC2) generates system logs.
 * **Storage:** Amazon S3 (Standard) acts as the primary archive.
 * **Automation:** S3 Lifecycle Rules move data to **Glacier** after 90 days for maximum cost efficiency.
+
+---
+
+## 👨‍💻 Detailed DevOps Interview Preparation
+
+<details>
+  <summary><b>Q1: Can you walk me through the cost-benefit analysis of using Gzip for Cloud Archiving?</b></summary>
+  <br>
+  <b>A:</b> In a production environment, logs can grow to several gigabytes daily. AWS S3 charges based on storage volume (GB/month) and data transfer. By implementing <b>Gzip (LZ77 algorithm)</b>, we achieve up to a 90% reduction in file size. 
+  <br><br>
+  For example, 100GB of raw logs costs ~.30/month in S3 Standard. Compressed, that's 10GB costing /bin/bash.23. While that seems small for one server, across a fleet of 500 instances, this automation saves thousands of dollars annually. Furthermore, smaller files mean faster upload times, reducing the window of potential network interruption.
+</details>
+
+<details>
+  <summary><b>Q2: How did you implement the "Least Privilege" security model for this automation?</b></summary>
+  <br>
+  <b>A:</b> Hardcoding root credentials is a major security risk. To secure this pipeline, I configured the AWS CLI with an <b>IAM User</b> that has a specific <b>Inline Policy</b>. 
+  <br><br>
+  Instead of 'AdministratorAccess', the user only has 's3:PutObject' and 's3:ListBucket' permissions restricted specifically to the 'nhcp-log-archive-2026' ARN. This ensures that even if the script or the server is compromised, an attacker cannot delete existing backups or access other sensitive data in the AWS account.
+</details>
+
+<details>
+  <summary><b>Q3: Explain your Error Handling logic. How do you prevent data loss?</b></summary>
+  <br>
+  <b>A:</b> The script follows a <b>"Verify-Before-Delete"</b> pattern. I capture the <b>Standard Exit Code ($?)</b> of the 'aws s3 cp' command. 
+  <br><br>
+  In Bash, an exit code of '0' indicates success. If the upload is interrupted by a network timeout or AWS API throttling, the code returns a non-zero value. My script uses an 'if-then' block to ensure the local 'mv' (move) command only executes on code 0. This prevents the "silent failure" where a script deletes a local log that never actually made it to the cloud.
+</details>
+
+<details>
+  <summary><b>Q4: How does this fit into a larger SRE (Site Reliability Engineering) strategy?</b></summary>
+  <br>
+  <b>A:</b> This project addresses two key SRE metrics: <b>MTTR (Mean Time To Recovery)</b> and <b>Error Budgets</b>. By automating log rotation, we eliminate "Disk Full" outages—a common cause of manual intervention. By archiving to S3, we ensure that post-incident reports (Post-mortems) always have historical data available for root-cause analysis, even if the original EC2 instance is terminated.
+</details>
